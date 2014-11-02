@@ -7,31 +7,88 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-mock</name>
 	<url>http://maven.apache.org</url>
+
+	<properties>
+		<java.version>1.6</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<version>4.1.1.RELEASE</version>
 		</dependency>
+		<!-- Junit -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.8</version>
 			<scope>test</scope>
 		</dependency>
+		<!--mockito for unit test -->
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.9.5</version>
 		</dependency>
+		<!-- useful for unit test -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>1.3.0</version>
+			<scope>test</scope>
+		</dependency>
+
+   <!--  for power mock -->
+    <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-api-mockito</artifactId>
+        <version>1.5.5</version>
+        <scope>test</scope>
+    </dependency>
+     <dependency>
+        <groupId>org.powermock</groupId>
+        <artifactId>powermock-module-junit4</artifactId>
+        <version>1.5.5</version>
+        <exclusions>
+            <exclusion>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-core</artifactId>
+            </exclusion>
+            <exclusion>
+                <groupId>org.powermock</groupId>
+                <artifactId>powermock-reflect</artifactId>
+            </exclusion>
+        </exclusions>
+        <scope>test</scope>
+    </dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<!-- Surefire plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.13</version>
+				<configuration>
+					<includes>
+						<strong>
+							<include>**/*Tests.java</include>
+						</strong>
+					</includes>
 				</configuration>
 			</plugin>
 		</plugins>
