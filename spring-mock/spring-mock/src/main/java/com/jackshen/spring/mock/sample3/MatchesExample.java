@@ -66,6 +66,19 @@ public class MatchesExample
         //下句verify renameTo方法被调用了一次，同时输入参数是任意file。
         Mockito.verify(mock).renameTo(Matchers.argThat(new IsAnyFiles()));
     }
+
+    @Test
+    public void testMatche_all_arguments()
+    {
+
+        foo.savePerson("jack", 12);
+        Mockito.verify(foo).savePerson(Matchers.anyString(), Matchers.eq(12));
+        //above is correct - eq() is also an argument matcher
+
+        Mockito.verify(foo).savePerson(Matchers.anyString(), 12);
+        //above is incorrect - exception will be thrown because third argument is given without an argument matcher.
+
+    }
 }
 
 class IsAnyFiles extends ArgumentMatcher<File>
