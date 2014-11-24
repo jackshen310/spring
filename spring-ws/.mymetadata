@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="spring-ws"
+  id="myeclipse.1415499344472"
+  context-root="/spring-ws"
+  j2ee-spec="6.0"
+  archive="spring-ws.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+

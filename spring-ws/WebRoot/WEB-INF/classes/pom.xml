@@ -1,0 +1,76 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.mycompany.hr</groupId>
+	<artifactId>bean</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+ 
+  
+  <parent> 
+     <!--被继承的父项目的构件标识符-->
+     <artifactId>spring-ws</artifactId>
+     <!--被继承的父项目的全球唯一标识符-->
+     <groupId>com.mycompany.spring</groupId>
+     <!--被继承的父项目的版本-->
+     <version>0.0.1-SNAPSHOT</version>
+     <!--父项目的pom.xml文件的相对路径。相对路径允许你选择一个不同的路径。默认值是../pom.xml。Maven首先在构建当前项目的地方寻找父项目的pom，其次在文件系统的这个位置（relativePath位置），然后在本地仓库，最后在远程仓库寻找父项目的pom。-->
+     <relativePath>../../../pom.xml</relativePath>
+ </parent> 
+ <properties>
+    <project-dir>${project.parent.basedir}</project-dir>
+  </properties> 
+	<build>  
+    <plugins>
+      <plugin>
+        <groupId>org.jvnet.jaxb2.maven2</groupId>
+        <artifactId>maven-jaxb2-plugin</artifactId>
+        <executions>
+          <execution>
+            <configuration>
+              <!-- schema  common config -->
+              <schemaDirectory>./</schemaDirectory><!-- the directory of schema files  -->
+              
+              <schemaIncludes>
+                <include>hello.xsd</include>
+              </schemaIncludes>
+              
+              <!-- By default, nothing is excluded.   -->
+              
+              <schemaExcludes>
+                <include>hr.xsd</include>
+              </schemaExcludes>
+                          
+              <generateDirectory>${project-dir}/src/generate</generateDirectory><!-- the directory of generate sources -->
+              
+              <source>1.7</source>
+              <target>1.7</target>
+              <!--end of schema  common config -->
+
+              <!-- schema binding common config -->
+              <bindingDirectory>./</bindingDirectory><!-- binding directory -->
+              
+              <bindingIncludes>
+                <include>*.xjb</include>
+              </bindingIncludes>
+              
+              <!-- By default, nothing is excluded. -->
+              <bindingExcludes>
+                <include>binding.xjb</include>
+              </bindingExcludes>
+              <!-- end of schema binding common config -->
+              
+            </configuration>
+            
+            <goals>
+              <goal>generate</goal>
+            </goals>
+
+          </execution>
+
+        </executions>
+
+      </plugin>
+    </plugins>
+  </build>
+</project>

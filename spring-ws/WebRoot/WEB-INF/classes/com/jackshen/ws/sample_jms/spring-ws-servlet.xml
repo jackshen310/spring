@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="com.jackshen.ws.sample_jms" />
+
+	<sws:annotation-driven />
+ 
+	<bean id="hello" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+	  <property name="schema" ref="schema"/>
+	  <property name="portTypeName" value="HelloService"/>
+	  <property name="locationUri" value="/helloService/"/>
+	</bean>
+	<bean id="schema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+	    <property name="xsd" value="classpath:com/jackshen/ws/sample_jms/hello.xsd"/>
+	</bean>
+	
+	<!-- 
+	Doesn't needed any more.
+	 -->
+	<bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
+		<property name="messageFactory" ref="messageFactory" />
+	</bean>
+	
+	<!-- 
+	used to convert the incoming JMS BytesMessage into a WebServiceMessage, and passes that to the WebServiceMessageReceiver registered.
+	
+	 -->
+	<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" />
+ 
+  <!-- Add JMS Support -->
+  <!-- 
+  Spring Web Services supports server-side JMS handling through the JMS functionality provided in the Spring framework. 
+  Spring Web Services provides the WebServiceMessageListener to plug in to a MessageListenerContainer. 
+  This message listener requires a WebServiceMessageFactory to 
+  and MessageDispatcher to operate. The following piece of configuration shows this:
+   -->
+  <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destinationName" value="RequestQueue"/>
+        <property name="messageListener">
+            <bean class="org.springframework.ws.transport.jms.WebServiceMessageListener">
+                <property name="messageFactory" ref="messageFactory"/>
+                <property name="messageReceiver" ref="messageDispatcher"/>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616"/>
+    </bean>
+    
+    <bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher">
+    </bean>
+
+</beans> 

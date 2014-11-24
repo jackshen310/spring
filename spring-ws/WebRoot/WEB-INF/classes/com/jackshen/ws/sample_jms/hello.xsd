@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:hr="http://www.fuxueliang.com/ws/hello"
+        elementFormDefault="qualified"
+        targetNamespace="http://www.fuxueliang.com/ws/hello">
+        
+    <xs:element name="HelloRequest">
+      <xs:complexType>
+            <xs:sequence>
+              <xs:element name="hello" type="xs:string"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+    </xs:element>    
+        <xs:element name="HelloResponse">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="hello" type="xs:string"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+      </xs:element>
+</xs:schema>

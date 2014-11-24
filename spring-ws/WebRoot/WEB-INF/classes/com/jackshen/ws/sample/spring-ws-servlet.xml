@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="com.jackshen.ws.sample" />
+
+	<sws:annotation-driven />
+ 
+  <!-- Automatic WSDL exposure -->
+	<bean id="hello"	class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+		<property name="wsdl" value="classpath:com/jackshen/ws/sample/hello.wsdl" />
+	</bean>
+	
+  <!-- By default, the DispatcherServlet can only delegate to Controllers, 
+  but we can instruct it to delegate to a MessageDispatcher 
+  by adding a WebServiceMessageReceiverHandlerAdapter to the servlet's web application context  -->
+<!-- 	<bean
+class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
+		<property name="messageFactory" ref="messageFactory" />
+	</bean> -->
+	
+<!-- 	<bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher"/> -->
+	
+<!-- 	<bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory" />
+  -->
+  
+  <!-- 
+  In a similar fashion, you can wire up a WsdlDefinitionHandlerAdapter 
+  to make sure the DispatcherServlet can handle implementations of the WsdlDefinition interface
+   -->
+  <!--  <bean class="org.springframework.ws.transport.http.WsdlDefinitionHandlerAdapter"/> -->
+   
+	
+
+
+	<!-- <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="defaultHandler" ref="messageDispatcher" />
+		<property name="mappings">
+			<props>
+				<prop key="*.wsdl">hello</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+ <!-- 
+  By default MessageDispatcher use SoapMessageDispatcher
+  -->
+<!--  <bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher"/> -->
+ 
+ 
+   <!-- 
+  Note that by explicitly adding the WebServiceMessageReceiverHandlerAdapter, the dispatcher servlet does not load the default adapters, 
+  and is unable to handle standard Spring-MVC Controllers.
+   Therefore, we add the SimpleControllerHandlerAdapter at the end
+   So If we doesn't need controllers any more,we can remove it.
+   -->
+ <!-- <bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/> -->
+ 
+ 
+</beans> 

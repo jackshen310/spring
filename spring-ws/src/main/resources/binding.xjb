@@ -1,0 +1,25 @@
+<jxb:bindings version="1.0"
+               xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <jxb:bindings schemaLocation="hr.xsd" node="/xs:schema">
+  
+  
+    <jxb:globalBindings localScoping="toplevel"/>
+         
+         
+    <jxb:schemaBindings>
+      <jxb:package name="com.mycompany.hr.bean">
+      </jxb:package>
+    </jxb:schemaBindings>
+    
+    <!--
+    <jxb:bindings schemaLocation="hr.xsd">
+        <jxb:bindings node="//xs:element[@name='employee']/xs:complexType/xs:sequence/xs:element[@name='address']/xs:complexType">
+            <jxb:class name="EmployeeAddress"/>
+        </jxb:bindings>
+    </jxb:bindings>
+    -->
+   
+  </jxb:bindings>
+
+</jxb:bindings>

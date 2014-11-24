@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:sws="http://www.springframework.org/schema/web-services"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+  http://www.springframework.org/schema/web-services http://www.springframework.org/schema/web-services/web-services-2.0.xsd
+  http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="com.mycompany.hr" />
+
+	<sws:annotation-driven />
+
+<!-- 	<sws:dynamic-wsdl id="holiday" portTypeName="HumanResource" 
+		locationUri="/holidayService/" targetNamespace="http://mycompany.com/hr/definitions">
+		<sws:xsd location="classpath:hr.xsd" />
+	</sws:dynamic-wsdl> -->
+
+<bean id="holiday" class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition">
+  <property name="schema" ref="schema"/>
+  <property name="portTypeName" value="HumanResource"/>
+  <property name="locationUri" value="/holidayService/"/>
+</bean>
+<bean id="schema" class="org.springframework.xml.xsd.SimpleXsdSchema">
+    <property name="xsd" value="classpath:hr.xsd"/>
+</bean>
+    <bean id="connectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="vm://localhost:8161?broker.persistent=false"/>
+    </bean>
+    
+     <bean class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="connectionFactory"/>
+        <property name="destinationName" value="RequestQueue"/>
+        <property name="messageListener">
+            <bean class="org.springframework.ws.transport.jms.WebServiceMessageListener">
+                <property name="messageFactory" ref="messageFactory"/>
+                <property name="messageReceiver" ref="messageDispatcher"/>
+            </bean>
+        </property>
+    </bean>
+    
+ <bean class="org.springframework.ws.transport.http.WebServiceMessageReceiverHandlerAdapter">
+    <property name="messageFactory" ref="messageFactory"/>
+ </bean>
+ <bean id="messageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory"/>
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="defaultHandler" ref="messageDispatcher"/>
+       <property name="mappings">
+           <props>
+             <prop key="*.wsdl">myServiceDefinition</prop>
+           </props>
+        </property>
+    </bean>
+
+ <bean id="myServiceDefinition" class="org.springframework.ws.wsdl.wsdl11.SimpleWsdl11Definition">
+       <property name="wsdl" value="classpath:wsdl/holiday.wsdl"/>
+    </bean>
+    
+<bean id="messageDispatcher" class="org.springframework.ws.soap.server.SoapMessageDispatcher">
+        <property name="endpointMappings">
+            <bean
+              class="org.springframework.ws.server.endpoint.mapping.PayloadRootQNameEndpointMapping">
+                <property name="defaultEndpoint">
+                    <bean class="com.mycompany.hr.ws.HolidayEndpoint"/>
+                </property>
+            </bean>
+        </property>
+    </bean>
+
+<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+
+<!-- <bean id="schemaCollection" class="org.springframework.xml.xsd.commons.CommonsXsdSchemaCollection">
+    <description>
+        This bean wrap the messages.xsd (which imports types.xsd), and inlines them as a one.
+    </description>
+    <property name="xsds">
+        <list>
+            <value>/WEB-INF/xsds/Orders.xsd</value>
+            <value>/WEB-INF/xsds/Customers.xsd</value>
+        </list>
+    </property>
+    <property name="inline" value="true"/>
+</bean> -->
+<!-- 
+ <bean class="org.springframework.ws.server.endpoint.adapter.MarshallingMethodEndpointAdapter">
+        <description>Enables the MessageDispatchServlet to invoke methods requiring OXM marshalling.</description>
+        <constructor-arg ref="marshaller"/>
+    </bean> -->
+
+ <!--    <bean id="marshaller" class="org.springframework.oxm.jaxb.Jaxb2Marshaller">
+          <property name="contextPath" value="org.springbyexample.person.schema.beans"/>
+     </bean> -->
+          
+</beans>

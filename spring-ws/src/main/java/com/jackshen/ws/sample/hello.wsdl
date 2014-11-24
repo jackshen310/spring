@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<wsdl:definitions   
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"  
+    xmlns:schema="http://www.fuxueliang.com/ws/hello"  
+    xmlns:tns="http://www.fuxueliang.com/ws/hello/definitions"  
+    targetNamespace="http://www.fuxueliang.com/ws/hello/definitions" >      
+    <wsdl:types>  
+    <schema xmlns="htp://www.w3.org/2001/XMLSchema"    
+        argetNamespace="http://www.fuxueliang.com/ws/hello">  
+        <element name="HelloRequest" type="string" />  
+        <element name="HelloResponse" type="string" />  
+    </schema>  
+    </wsdl:types>  
+    <wsdl:message name="HelloRequest">  
+        <wsdl:part element="schema:HelloRequest" name="HelloRequest" />  
+    </wsdl:message>  
+    <wsdl:message name="HelloResponse">  
+        <wsdl:part element="schema:HelloResponse" name="HelloResponse" />  
+    </wsdl:message>  
+    <wsdl:portType name="HelloPortType">  
+        <wsdl:operation name="Hello">  
+            <wsdl:input message="tns:HelloRequest" name="HelloRequest" />  
+            <wsdl:output message="tns:HelloResponse" name="HelloResponse" />  
+        </wsdl:operation>  
+    </wsdl:portType>  
+    <wsdl:binding name="HelloBinding" type="tns:HelloPortType">  
+        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />  
+        <wsdl:operation name="Hello">  
+            <soap:operation soapAction="" />  
+            <wsdl:input name="HelloRequest">  
+                <soap:body use="literal" />  
+            </wsdl:input>  
+            <wsdl:output name="HelloResponse">  
+                <soap:body use="literal" />  
+            </wsdl:output>  
+        </wsdl:operation>  
+    </wsdl:binding>  
+    <wsdl:service name="HelloService">  
+        <wsdl:port binding="tns:HelloBinding" name="HelloPort">  
+            <soap:address location="http://localhost:8080/spring-ws/webservice" />  
+        </wsdl:port>  
+    </wsdl:service>  
+</wsdl:definitions>  

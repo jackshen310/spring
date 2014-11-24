@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<HelloRequest xmlns="http://www.fuxueliang.com/ws/hello">  
+   <hello>Rondy.F</hello>  
+</HelloRequest>   
